@@ -2,7 +2,7 @@ package com.twilio.implimentation;
 
 import com.twilio.common.BaseApiResponse;
 import com.twilio.models.SMS;
-import com.twilio.models.basemodel.BaseApplication;
+import com.twilio.models.SendSmsRequest;
 import com.twilio.service.SendSmsService;
 import com.twilio.service.action.SendSmsActions;
 import com.twilio.utils.GsonConverter;
@@ -39,13 +39,16 @@ public class SendSmsServiceImplementation implements SendSmsService, SendSmsActi
     private String from;
 
     @Override
-    public ResponseEntity<BaseApiResponse<?>> sendSms(SMS sms) {
+    public ResponseEntity<BaseApiResponse<?>> sendSms(SendSmsRequest sms) {
         BaseApiResponse<?> response = sendSmsAction(sms);
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
     }
 
     @Override
-    public BaseApiResponse<?> sendSmsAction(SMS sms) {
+    public BaseApiResponse<?> sendSmsAction(SendSmsRequest sendSmsRequest) {
+        SMS sms = new SMS();
+        sms.setMessage(sendSmsRequest.getSecret());
+        sms.setTo(sendSmsRequest.getPhoneNumber());
         Twilio.init(SID, authToken);
         Map<String, Object> body = new HashMap<>();
         try {

@@ -8,5 +8,5 @@ import com.twilio.models.basemodel.BaseApplication;
 import org.springframework.http.ResponseEntity;
 
 public interface SendSmsService {
-    ResponseEntity<BaseApiResponse<?>> sendSms(SMS sms) ;
+    ResponseEntity<BaseApiResponse<?>> sendSms(SendSmsRequest sms) ;
 }

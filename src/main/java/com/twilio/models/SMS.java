@@ -15,4 +15,6 @@ public class SMS {
     private String to;
     @NonNull
     private String message;
+    @NonNull
+    private String secret;
 }
