@@ -1,5 +1,6 @@
 package com.twilio.api;
 
+import com.twilio.models.SMS;
 import com.twilio.models.basemodel.BaseApplication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,5 +12,5 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface ApplicationApi {
 
     @PostMapping("/send")
-    ResponseEntity<?> sendSms(@RequestBody BaseApplication baseApplication);
+    ResponseEntity<?> sendSms(@RequestBody SMS sms);
 }

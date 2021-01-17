@@ -1,7 +1,5 @@
 package com.twilio.models;
 
-import com.sun.istack.internal.NotNull;
-import com.twilio.models.basemodel.BaseApplication;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,9 +12,7 @@ import org.springframework.lang.NonNull;
 @AllArgsConstructor
 public class SMS {
     @NonNull
-    private String fromPhoneNumber;
-    @NotNull
-    private String toPhoneNumber;
-    @NotNull
-    private String messageBody;
+    private String to;
+    @NonNull
+    private String message;
 }

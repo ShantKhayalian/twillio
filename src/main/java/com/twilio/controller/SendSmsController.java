@@ -19,11 +19,10 @@ public class SendSmsController implements ApplicationApi {
     private final SendSmsService sendSmsService;
 
     @Override
-    public ResponseEntity<?> sendSms(BaseApplication baseApplication) {
-        if(baseApplication.getPhoneNumber().getFromPhoneNumber().isEmpty()) throw new FromPhoneNumberMissingException();
-        if(baseApplication.getPhoneNumber().getToPhoneNumber().isEmpty()) throw new FromPhoneNumberMissingException();
-        if(baseApplication.getPhoneNumber().getMessageBody().isEmpty()) throw new FromPhoneNumberMissingException();
-        ResponseEntity<BaseApiResponse<?>> response = sendSmsService.sendSms(baseApplication);
+    public ResponseEntity<?> sendSms(SMS sms) {
+        if(sms.getTo().isEmpty()) throw new FromPhoneNumberMissingException();
+        if(sms.getMessage().isEmpty()) throw new FromPhoneNumberMissingException();
+        ResponseEntity<BaseApiResponse<?>> response = sendSmsService.sendSms(sms);
         return new ResponseEntity<>(response.getBody(), response.getStatusCode());
     }
 }

@@ -1,7 +1,7 @@
 package com.twilio.implimentation;
 
 import com.twilio.common.BaseApiResponse;
-import com.twilio.constances.ApiConstants;
+import com.twilio.models.SMS;
 import com.twilio.models.basemodel.BaseApplication;
 import com.twilio.service.SendSmsService;
 import com.twilio.service.action.SendSmsActions;
@@ -21,8 +21,6 @@ import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
 
-import static com.twilio.constances.ApiConstants.AUTH_TOKEN;
-import static com.twilio.constances.ApiConstants.SID;
 import static com.twilio.utils.ResponseConverter.falseAlert;
 import static com.twilio.utils.ResponseConverter.trueAlert;
 
@@ -37,22 +35,23 @@ public class SendSmsServiceImplementation implements SendSmsService, SendSmsActi
     private String authToken;
     @Value("${app.sid}" )
     private String SID;
+    @Value("${app.from}")
+    private String from;
 
     @Override
-    public ResponseEntity<BaseApiResponse<?>> sendSms(BaseApplication baseApplication) {
-        BaseApiResponse<?> response = sendSmsAction(baseApplication);
+    public ResponseEntity<BaseApiResponse<?>> sendSms(SMS sms) {
+        BaseApiResponse<?> response = sendSmsAction(sms);
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
     }
 
     @Override
-    public BaseApiResponse<?> sendSmsAction(BaseApplication baseApplication) {
+    public BaseApiResponse<?> sendSmsAction(SMS sms) {
         Twilio.init(SID, authToken);
         Map<String, Object> body = new HashMap<>();
         try {
-            Message message = Message.creator(new PhoneNumber(baseApplication.getPhoneNumber().getFromPhoneNumber()),
-                    new PhoneNumber(baseApplication.getPhoneNumber().getToPhoneNumber()),
-                    baseApplication.getPhoneNumber().getMessageBody()).create();
-
+            Message message = Message.creator(new PhoneNumber(
+                    sms.getTo()),new PhoneNumber(from),
+                    sms.getMessage()).create();
             log.info("message.getSid() {} ",message.getSid());
         }catch (Exception e){
             log.error("Error found inside sendSmsAction() inside SendSmsServiceImplementation with error {} ",e.getMessage());
